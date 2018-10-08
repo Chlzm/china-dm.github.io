@@ -2,5 +2,17 @@
     "name":"pwa",
     "start_url":"/default.html",
     "theme_color":"#f90",
-    "background_color":"#f60"
+    "background_color":"#f60",
+    "icons":[
+        {
+            "src":"images/icon1.png",
+            "sizes":"144*144",
+            "type":"images/png"
+        },
+        {
+            "src":"images/icon192.png",
+            "sizes":"192*192",
+            "type":"images/png"
+        }
+    ]
 }
