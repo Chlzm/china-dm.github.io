@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/css/main1.css">
+</head>
+<body>
+
+<h1>11111</h1>
+<img src="https://wwwupload.gaodunwangxiao.com/images/rgtConsult.png"/>
+<script>
+    var version = '1.0.23';
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/sw.js', {scope: '/'})
+                .then(function (registration) {
+                    if (localStorage.getItem('sw_version') !== version) {
+                        registration.update().then(function () {
+                            localStorage.setItem('sw_version', version)
+                        });
+                    }
+                    // 注册成功
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(function (err) {
+
+                    // 注册失败:(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
+
+</script>
+</body>
+</html>
