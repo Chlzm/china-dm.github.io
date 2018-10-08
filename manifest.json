@@ -1,18 +1,19 @@
 {
     "name":"pwa",
-    "start_url":"/default.html",
+    "start_url":"/index.html",
     "theme_color":"#f90",
     "background_color":"#f60",
+    "display":"standalone",
     "icons":[
         {
-            "src":"icon1.png",
-            "sizes":"144*144",
-            "type":"images/png"
+            "src":"icon192.png",
+            "sizes":"192x192",
+            "type":"image/png"
         },
         {
-            "src":"icon192.png",
-            "sizes":"192*192",
-            "type":"images/png"
+            "src":"icon1.png",
+            "sizes":"144x144",
+            "type":"image/png"
         }
     ]
 }
