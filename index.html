@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="/css/main1.css">
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="stylesheet" href="/css/main1.css"/>
 </head>
 <body>
+<div id="offline" style="display:none">离线</div>
+<script>
+    var offline = document.getElementById("offline");
+    function showIndicator() {
+        offline.innerHTML = "离线"
+        offline.style.display = "block"
+    }
+    function hideIndicator() {
+        offline.style.display = "none"
+    }
+    window.addEventListener("online",hideIndicator);
+    window.addEventListener("offline",showIndicator);
 
-<h1>121113</h1>
+</script>
+<h1>1111</h1>
 <img src="https://wwwupload.gaodunwangxiao.com/images/rgtConsult.png"/>
 <script>
     var version = '1.0.23';
@@ -25,7 +38,6 @@
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
                 })
                 .catch(function (err) {
-
                     // 注册失败:(
                     console.log('ServiceWorker registration failed: ', err);
                 });
