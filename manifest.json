@@ -1,18 +1,19 @@
 {
-    "name":"pwa",
-    "start_url":"/index.html",
-    "theme_color":"#f90",
+    "name":"pwa3",
+    "start_url":"/",
+    "theme_color":"#f99",
     "background_color":"#f60",
     "display":"standalone",
+    "description": "the pp android of pwa version",
     "icons":[
-        {
-            "src":"icon192.png",
-            "sizes":"192x192",
-            "type":"image/png"
-        },
         {
             "src":"icon1.png",
             "sizes":"144x144",
+            "type":"image/png"
+        },
+        {
+            "src":"icon192.png",
+            "sizes":"192x192",
             "type":"image/png"
         }
     ]
