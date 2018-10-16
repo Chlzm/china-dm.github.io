@@ -22,13 +22,13 @@
     window.addEventListener("offline",showIndicator);
 
 </script>
-<h1>Hello World !</h1>
+<h1>Hello World!!</h1>
 <img src="https://wwwupload.gaodunwangxiao.com/images/rgtConsult.png"/>
 <script>
-    var version = '1.0.23';
+    var version = '1.0.231';
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
-            navigator.serviceWorker.register('/sw.js', {scope: '/'})
+            navigator.serviceWorker.register('/service-work.js', {scope: '/'})
                 .then(function (registration) {
                     if (localStorage.getItem('sw_version') !== version) {
                         registration.update().then(function () {

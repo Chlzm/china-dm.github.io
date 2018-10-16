@@ -1,10 +1,12 @@
 {
     "name":"pwa3",
+    "short_name":"pwa",
     "start_url":"/",
     "theme_color":"#f99",
     "background_color":"#f60",
     "display":"standalone",
     "description": "the pp android of pwa version",
+    "scope":"/",
     "icons":[
         {
             "src":"icon1.png",
