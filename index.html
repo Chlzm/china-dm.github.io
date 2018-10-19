@@ -15,15 +15,31 @@
     function showIndicator() {
         offline.innerHTML = "离线"
         offline.style.display = "block"
+        Notification.requestPermission().then(grant =>{
+            if(grant != "granted"){
+                return;
+            }
+            const notification = new Notification("Hi,网络不给力",{
+                body: "您的网络貌似离线了，不过在志文工作室里访问过的页面还可以继续打开~",
+                icon: 'https://wwwupload.gaodunwangxiao.com/uploads/180126/5931-1P126153351949.jpg'
+            })
+            notification.onclick = ()=>{
+                notification.close();
+            }
+        })
     }
     function hideIndicator() {
         offline.style.display = "none"
     }
     window.addEventListener("online",hideIndicator);
     window.addEventListener("offline",showIndicator);
+    self.onerror = (errorMessage, scriptURI, lineNumber, columnNumber, error)=>{
+        debugger;
+    }
 </script>
-<h1>Hello World 12</h1>
+<h1>Hello World 132</h1>
 <img src="https://wwwupload.gaodunwangxiao.com/images/rgtConsult.png"/>
+<img src="https://wwwupload.gaodunwangxiao.com/uploads/180126/5931-1P126153351949.jpg" style="display:none"/>
 <script>
     var version = '1.0.222111';
     if ('serviceWorker' in navigator) {

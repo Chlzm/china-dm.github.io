@@ -1,7 +1,7 @@
 var cacheStorageKey = "minimal-pwa-11s";
 urlsToCache = [
     '/default.html',
-    '/css/main2.css',
+    '/css/main23.css',
     '/images/1.jpg'
 ]
 this.addEventListener('install', function (event) {
@@ -91,7 +91,7 @@ function onlineRequest(fetchRequest) {
         credentials: "omit",
         mode: 'cors'
     }).then(response => {
-        if (!response || response.status !== 200 || !response.headers.get('Content-type').match(/image|javascript|test\/css/i)) {
+        if (!response || response.status !== 200) {
             return response;
         }
         const responseToCache = response.clone();
@@ -104,24 +104,30 @@ function onlineRequest(fetchRequest) {
     });
 }
 
-//....12
-// this.addEventListener('activate', function (event) {
-//     event.waitUntil(
-//         Promise.all([
-//
-//             // 更新客户端
-//             self.clients.claim(),
-//
-//             // 清理旧版本
-//             caches.keys().then(function (cacheList) {
-//                 return Promise.all(
-//                     cacheList.map(function (cacheName) {
-//                         if (cacheName == 'my-test-cache-v1') {
-//                             return caches.delete(cacheName);
-//                         }
-//                     })
-//                 );
-//             })
-//         ])
-//     );
-// });
+this.addEventListener('activate', function (event) {
+    event.waitUntil(
+        Promise.all([
+
+            // 更新客户端
+            self.clients.claim(),
+
+            // 清理旧版本
+            caches.keys().then(function (cacheList) {
+                debugger;
+                return Promise.all(
+                    cacheList.map(function (cacheName) {
+                        if (cacheName == 'my-test-cache-v1') {
+                            return caches.delete(cacheName);
+                        }
+                    })
+                );
+            })
+        ])
+    );
+});
+
+
+self.addEventListener("unhandledrejection",(error)=>{
+    //console.log(error);
+})
+
