@@ -89,7 +89,7 @@ function onlineRequest(fetchRequest) {
             return response;
         }
         const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then(function (cache) {
+        caches.open('my-test-cache-v1').then(function (cache) {
             cache.put(event.request, responseToCache);
         });
         return response;
