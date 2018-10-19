@@ -1,18 +1,19 @@
-var cacheStorageKey = "minimal-pwa-11s"
+var cacheStorageKey = "minimal-pwa-11s";
+urlsToCache = [
+    '/default.html',
+    '/css/main2.css',
+    '/images/1.jpg'
+]
 this.addEventListener('install', function (event) {
     // 如果监听到了 service worker 已经安装成功的话，就会调用 event.waitUntil 回调函数
     event.waitUntil(
         // 安装成功后操作 CacheStorage 缓存，使用之前需要先通过 caches.open() 打开对应缓存空间。
         caches.open('my-test-cache-v1').then(function (cache) {
             // 通过 cache 缓存对象的 addAll 方法添加 precache 缓存
-            return cache.addAll([
-                /*  '/',
-                  '/index.html',*/
-                //'/css/main1.css',
-            ]);
+            return cache.addAll(urlsToCache);
         })
     );
-    event.waitUntil(self.skipWaiting());
+    //event.waitUntil(self.skipWaiting());
 });
 
 this.addEventListener('fetch', function (event) {
@@ -63,28 +64,28 @@ function offlineRequest(request) {
         return caches.match('/images/1.jpg')
     }
     if(request.url == "http://localhost:8084/"){
-        return caches.match('http://localhost:8084/')
+        return caches.match('/default.html')
     }
 }
 
 //....12
-this.addEventListener('activate', function (event) {
-    event.waitUntil(
-        Promise.all([
-
-            // 更新客户端
-            self.clients.claim(),
-
-            // 清理旧版本
-            caches.keys().then(function (cacheList) {
-                return Promise.all(
-                    cacheList.map(function (cacheName) {
-                        if (cacheName == 'my-test-cache-v1') {
-                            return caches.delete(cacheName);
-                        }
-                    })
-                );
-            })
-        ])
-    );
-});
+// this.addEventListener('activate', function (event) {
+//     event.waitUntil(
+//         Promise.all([
+//
+//             // 更新客户端
+//             self.clients.claim(),
+//
+//             // 清理旧版本
+//             caches.keys().then(function (cacheList) {
+//                 return Promise.all(
+//                     cacheList.map(function (cacheName) {
+//                         if (cacheName == 'my-test-cache-v1') {
+//                             return caches.delete(cacheName);
+//                         }
+//                     })
+//                 );
+//             })
+//         ])
+//     );
+// });
