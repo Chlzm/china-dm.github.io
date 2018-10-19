@@ -1,4 +1,4 @@
-
+var cacheStorageKey = "minimal-pwa-11s"
 this.addEventListener('install', function (event) {
     // 如果监听到了 service worker 已经安装成功的话，就会调用 event.waitUntil 回调函数
     event.waitUntil(
@@ -6,8 +6,8 @@ this.addEventListener('install', function (event) {
         caches.open('my-test-cache-v1').then(function (cache) {
             // 通过 cache 缓存对象的 addAll 方法添加 precache 缓存
             return cache.addAll([
-               /* '/',
-                '/index.html',*/
+                /*  '/',
+                  '/index.html',*/
                 //'/css/main1.css',
             ]);
         })
@@ -27,16 +27,20 @@ this.addEventListener('fetch', function (event) {
             // 如果 service worker 没有返回，那就得直接请求真实远程服务
             var request = event.request.clone(); // 把原始请求拷过来
             return fetch(request, {
-                headers:{
+                headers: {
                     //withCredentials:false,
                 },
-                credentials:"omit",
-                mode:'cors'
+                credentials: "omit",
+                mode: 'cors'
             }).then(function (httpRes) {
 
                 // http请求的返回已被抓到，可以处置了。
 
                 // 请求失败了，直接返回失败的结果就好了。。
+                // if(httpRes.url == "http://localhost:8084/"){
+                //     return httpRes;
+                // }
+
                 if (!httpRes || httpRes.status !== 200) {
                     return httpRes;
                 }
@@ -47,11 +51,23 @@ this.addEventListener('fetch', function (event) {
                 });
 
                 return httpRes;
+            }).catch(() => {
+                offlineRequest(request)
             });
         })
     );
 });
-  //....12
+
+function offlineRequest(request) {
+    if (request.url.match(/\.(png|gif|jpg)/i)) {
+        return caches.match('/images/1.jpg')
+    }
+    if(request.url == "http://localhost:8084/"){
+        return caches.match('http://localhost:8084/')
+    }
+}
+
+//....12
 this.addEventListener('activate', function (event) {
     event.waitUntil(
         Promise.all([
@@ -63,7 +79,7 @@ this.addEventListener('activate', function (event) {
             caches.keys().then(function (cacheList) {
                 return Promise.all(
                     cacheList.map(function (cacheName) {
-                         if (cacheName == 'my-test-cache-v1') {
+                        if (cacheName == 'my-test-cache-v1') {
                             return caches.delete(cacheName);
                         }
                     })

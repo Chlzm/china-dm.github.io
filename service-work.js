@@ -1,5 +1,4 @@
 
-
 self.addEventListener('error', function(e) {
     self.clients.matchAll()
         .then(function (clients) {
@@ -27,10 +26,13 @@ self.addEventListener('unhandledrejection', function(e) {
 })
 
 importScripts('https://g.alicdn.com/kg/workbox/3.3.0/workbox-sw.js');
+
 workbox.setConfig({
-    debug: false,
+    debug: true,
     modulePathPrefix: 'https://g.alicdn.com/kg/workbox/3.3.0/'
 });
+
+
 workbox.skipWaiting();
 workbox.clientsClaim();
 
@@ -38,6 +40,10 @@ var cacheList = [
     '/',
     '/manifest.json'
 ];
+
+
+
+
 
 workbox.routing.registerRoute(
     function(event) {
@@ -59,7 +65,7 @@ workbox.routing.registerRoute(
         plugins: [
             new workbox.expiration.Plugin({
                 maxEntries: 10
-            })
+            }),
         ]
     })
 );
@@ -69,6 +75,18 @@ workbox.routing.registerRoute(
     //new RegExp('https://g\.alicdn\.com/'),
     workbox.strategies.staleWhileRevalidate({
         cacheName: 'tbh:static',
+        plugins: [
+            new workbox.expiration.Plugin({
+                maxEntries: 20
+            })
+        ]
+    })
+);
+
+workbox.routing.registerRoute(
+    /\.js/,
+    workbox.strategies.staleWhileRevalidate({
+        cacheName: 'tbh:js',
         plugins: [
             new workbox.expiration.Plugin({
                 maxEntries: 20
@@ -92,7 +110,6 @@ workbox.routing.registerRoute(
         ]
     })
 );
-
 workbox.routing.registerRoute(
     new RegExp('https://gtms01\.alicdn\.com/'),
     workbox.strategies.cacheFirst({
@@ -113,6 +130,25 @@ workbox.routing.registerRoute(
     /https:\/\/wwwupload\.gaodunwangxiao\.com\/images\/rgtConsult\.png/,
     workbox.strategies.networkFirst({
         cacheName: 'cros:img',
+        cacheExpiration: {
+            maxEntries: 10,
+            maxAgeSeconds: 7 * 24 * 60 * 60
+        },
+        plugins: [
+            new workbox.cacheableResponse.Plugin({
+                statuses: [0, 200]
+            }),
+            new workbox.expiration.Plugin({
+                maxEntries: 30,
+                maxAgeSeconds: 12 * 60 * 60
+            })
+        ]
+    })
+)
+workbox.routing.registerRoute(
+    /http:\/\/baiyi\.gaodun\.com\/dist\/vendor\.js\?aaa0916add7e5bb82680/,
+    workbox.strategies.networkFirst({
+        cacheName: 'cros:javascript',
         cacheExpiration: {
             maxEntries: 10,
             maxAgeSeconds: 7 * 24 * 60 * 60

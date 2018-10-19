@@ -5,8 +5,8 @@
     <title>Title</title>
     <link rel="manifest" href="/manifest.json"/>
     <link rel="stylesheet" href="/css/main1.css"/>
-    <link rel="apple-touch-icon" href="icon1.png" />
-    <link rel="apple-touch-icon-precomposed" href="icon1.png">
+    <link rel="apple-touch-icon" href="/icon1.png">
+    <script type="text/javascript" src="/js/index.js"></script>
 </head>
 <body>
 <div id="offline" style="display:none">离线</div>
@@ -21,15 +21,14 @@
     }
     window.addEventListener("online",hideIndicator);
     window.addEventListener("offline",showIndicator);
-
 </script>
-<h1>Hello World!!</h1>
+<h1>Hello World 111</h1>
 <img src="https://wwwupload.gaodunwangxiao.com/images/rgtConsult.png"/>
 <script>
-    var version = '1.0.231';
+    var version = '1.0.222111';
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
-            navigator.serviceWorker.register('/service-work.js', {scope: '/'})
+            navigator.serviceWorker.register('/sw.js', {scope: '/'})
                 .then(function (registration) {
                     if (localStorage.getItem('sw_version') !== version) {
                         registration.update().then(function () {
