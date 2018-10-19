@@ -16,7 +16,7 @@ this.addEventListener('install', function (event) {
     //event.waitUntil(self.skipWaiting());
 });
 
-this.addEventListener('fetch', function (event) {
+/*this.addEventListener('fetch', function (event) {
     event.respondWith(
         caches.match(event.request).then(function (response) {
             // 来来来，代理可以搞一些代理的事情
@@ -38,9 +38,9 @@ this.addEventListener('fetch', function (event) {
                 // http请求的返回已被抓到，可以处置了。
 
                 // 请求失败了，直接返回失败的结果就好了。。
-                // if(httpRes.url == "http://localhost:8084/"){
-                //     return httpRes;
-                // }
+                if (httpRes.url == "http://localhost:8084/index.html") {
+                    return httpRes;
+                }
 
                 if (!httpRes || httpRes.status !== 200) {
                     return httpRes;
@@ -57,15 +57,45 @@ this.addEventListener('fetch', function (event) {
             });
         })
     );
-});
+});*/
+
+self.addEventListener("fetch",event=>{
+    event.respondWith(
+        caches.match(event.request).then(hit=>{
+            if(hit){
+                return hit;
+            }
+            const fetchRequest = event.request.clone();
+            if(navigator.onLine){
+                return onlineRequest(fetchRequest)
+            }
+            return offlineRequest(fetchRequest)
+        })
+    )}
+)
 
 function offlineRequest(request) {
     if (request.url.match(/\.(png|gif|jpg)/i)) {
         return caches.match('/images/1.jpg')
     }
-    if(request.url == "http://localhost:8084/"){
+    if (request.url.match(/\.html$/)) {
         return caches.match('/default.html')
     }
+}
+
+function onlineRequest(fetchRequest) {
+    return fetch(fetchRequest).then(response => {
+        if (!response || response.status !== 200 || !response.headers.get('Content-type').match(/image|javascript|test\/css/i)) {
+            return response;
+        }
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then(function (cache) {
+            cache.put(event.request, responseToCache);
+        });
+        return response;
+    }).catch(() => {
+        offlineRequest(fetchRequest);
+    });
 }
 
 //....12
