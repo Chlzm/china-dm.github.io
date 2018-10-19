@@ -84,7 +84,13 @@ function offlineRequest(request) {
 }
 
 function onlineRequest(fetchRequest) {
-    return fetch(fetchRequest).then(response => {
+    return fetch(fetchRequest, {
+        headers: {
+            //withCredentials:false,
+        },
+        credentials: "omit",
+        mode: 'cors'
+    }).then(response => {
         if (!response || response.status !== 200 || !response.headers.get('Content-type').match(/image|javascript|test\/css/i)) {
             return response;
         }
