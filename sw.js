@@ -1,16 +1,19 @@
-var cacheStorageKey = "minimal-pwa-11s";
+var swVersion = "1.0.2";
+const expectedCaches = ['static-v2'];
 urlsToCache = [
     '/default.html',
-    '/css/main23.css',
     '/images/1.jpg'
 ]
 this.addEventListener('install', function (event) {
     // 如果监听到了 service worker 已经安装成功的话，就会调用 event.waitUntil 回调函数
     event.waitUntil(
         // 安装成功后操作 CacheStorage 缓存，使用之前需要先通过 caches.open() 打开对应缓存空间。
-        caches.open('my-test-cache-v1').then(function (cache) {
+        caches.open('static-v2').then(function (cache) {
             // 通过 cache 缓存对象的 addAll 方法添加 precache 缓存
             return cache.addAll(urlsToCache);
+        }).then(() => {
+            //debugger;
+            self.skipWaiting();
         })
     );
     //event.waitUntil(self.skipWaiting());
@@ -59,26 +62,27 @@ this.addEventListener('install', function (event) {
     );
 });*/
 
-self.addEventListener("fetch",event=>{
-    event.respondWith(
-        caches.match(event.request).then(hit=>{
-            if(hit){
-                return hit;
-            }
-            const fetchRequest = event.request.clone();
-            if(navigator.onLine){
-                return onlineRequest(fetchRequest)
-            }
-            return offlineRequest(fetchRequest)
-        })
-    )}
+self.addEventListener("fetch", event => {
+        event.respondWith(
+            caches.match(event.request).then(hit => {
+                if (hit) {
+                    return hit;
+                }
+                const fetchRequest = event.request.clone();
+                if (navigator.onLine) {
+                    return onlineRequest(fetchRequest)
+                }
+                return offlineRequest(fetchRequest)
+            })
+        )
+    }
 )
 
 function offlineRequest(request) {
     if (request.url.match(/\.(png|gif|jpg)/i)) {
         return caches.match('/images/1.jpg')
     }
-    if (request.url.match(/\.html$/)) {
+    if (request.url.match(/http:\/\/localhost:8084/)) {
         return caches.match('/default.html')
     }
 }
@@ -91,11 +95,11 @@ function onlineRequest(fetchRequest) {
         credentials: "omit",
         mode: 'cors'
     }).then(response => {
-        if (!response || response.status !== 200) {
+        if (!response || response.status !== 200 || response.url === "http://localhost:8084/") {
             return response;
         }
         const responseToCache = response.clone();
-        caches.open('my-test-cache-v1').then(function (cache) {
+        caches.open('static-v1').then(function (cache) {
             cache.put(fetchRequest, responseToCache);
         });
         return response;
@@ -113,11 +117,10 @@ this.addEventListener('activate', function (event) {
 
             // 清理旧版本
             caches.keys().then(function (cacheList) {
-                debugger;
                 return Promise.all(
-                    cacheList.map(function (cacheName) {
-                        if (cacheName == 'my-test-cache-v1') {
-                            return caches.delete(cacheName);
+                    cacheList.map(function (key) {
+                        if (!expectedCaches.includes(key)) {
+                            return caches.delete(key);
                         }
                     })
                 );
@@ -126,8 +129,8 @@ this.addEventListener('activate', function (event) {
     );
 });
 
-
-self.addEventListener("unhandledrejection",(error)=>{
+// 安装service worker 失败时
+self.addEventListener("unhandledrejection", (error) => {
     //console.log(error);
 })
 

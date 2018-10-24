@@ -1,18 +1,25 @@
 {
-    "name": "appName web app",
-    "short_name": "appName",
+    "scope": "/",
+    "name": "高顿WEB",
+    "short_name": "高顿",
     "start_url": "/",
     "display": "standalone",
     "theme_color": "#FFDF00",
     "background_color": "#FFDF00",
-    "icons": [{
-        "src": "icon192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-    },
+    "icons": [
+        {
+            "src": "icon192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
         {
             "src": "icon1.png",
             "sizes": "144x144",
             "type": "image/png"
-        }]
+        }
+    ]
 }
+
+
+
+
