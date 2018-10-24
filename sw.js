@@ -107,7 +107,26 @@ function onlineRequest(fetchRequest) {
         offlineRequest(fetchRequest);
     });
 }
+this.addEventListener('message',(event)=>{
+    event.waitUntil(
+        Promise.all([
 
+            // 更新客户端
+            self.clients.claim(),
+
+            // 清理旧版本
+            caches.keys().then(function (cacheList) {
+                return Promise.all(
+                    cacheList.map(function (key) {
+                        if (!expectedCaches.includes(key)) {
+                            return caches.delete(key);
+                        }
+                    })
+                );
+            })
+        ])
+    );
+})
 this.addEventListener('activate', function (event) {
     event.waitUntil(
         Promise.all([
@@ -128,6 +147,10 @@ this.addEventListener('activate', function (event) {
         ])
     );
 });
+
+self.addEventListener('sync',event=>{
+    alert(event.tag)
+})
 
 // 安装service worker 失败时
 self.addEventListener("unhandledrejection", (error) => {

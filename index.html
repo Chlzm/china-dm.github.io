@@ -23,8 +23,8 @@
             const notification = new Notification("Hi,网络不给力", {
                 body: "您的网络貌似离线了，不过在高顿访问过的页面还可以继续打开~",
                 icon: 'https://wwwupload.gaodunwangxiao.com/uploads/180126/5931-1P126153351949.jpg',
-                renotify:true,
-                tag:"hello"
+                renotify: true,
+                tag: "hello"
             })
             notification.onclick = () => {
                 notification.close();
@@ -51,7 +51,7 @@
         return false;
         event.userChoice.then(function (choiceResult) {
             console.log(choiceResult.outcome); // 为 dismissed 或 accepted
-            if(choiceResult.outcome === 'dismissed') {
+            if (choiceResult.outcome === 'dismissed') {
                 console.log('User cancelled home screen install');
             } else {
                 console.log('User added to home screen');
@@ -60,25 +60,30 @@
         })
 
     })
-    document.getElementById('addToHomeScreen').addEventListener('click', function() {
-        if(deferredPrompt) {
+    document.getElementById('addToHomeScreen').addEventListener('click', function () {
+        if (deferredPrompt) {
             deferredPrompt.prompt();
         }
     })
 
-    var version = '1.0.5';
+    var version = '1.0.1';
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
             navigator.serviceWorker.register('/sw.js', {scope: '/'})
                 .then(function (registration) {
-                    setInterval(()=>{
+                    /*setInterval(()=>{
+
+                    },2000)*/
+                    if (localStorage.getItem('sw_version') !== version) {
                         registration.update().then(function () {
                             localStorage.setItem('sw_version', version)
-                        });
-                    },2000)
-                   /* if (localStorage.getItem('sw_version') !== version) {
+                            // 通知sw更新缓存
+                            if(navigator.serviceWorker.controller){
+                                navigator.serviceWorker.controller.postMessage('update cache')
+                            }
 
-                    }*/
+                        });
+                    }
                     // 注册成功
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
                 })
@@ -86,6 +91,12 @@
                     // 注册失败:(
                     console.log('ServiceWorker registration failed: ', err);
                 });
+            navigator.serviceWorker.ready.then(reg => {
+                return reg.sync.register('yes')
+            }).then(res => {
+                console.log("成功" + res)
+            })
+
         });
     }
 
