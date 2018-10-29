@@ -149,7 +149,8 @@ this.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('sync',event=>{
-    alert(event.tag)
+    //alert(event.tag)
+    console.log(event);
 })
 
 // 安装service worker 失败时
