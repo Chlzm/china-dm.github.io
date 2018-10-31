@@ -25,11 +25,11 @@ self.addEventListener('unhandledrejection', function(e) {
         });
 })
 
-importScripts('https://g.alicdn.com/kg/workbox/3.3.0/workbox-sw.js');
+importScripts('/workbox/workbox-sw.js');
 
 workbox.setConfig({
-    debug: true,
-    modulePathPrefix: 'https://g.alicdn.com/kg/workbox/3.3.0/'
+    debug: false,
+    modulePathPrefix: '/workbox'
 });
 
 

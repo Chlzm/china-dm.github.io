@@ -1,4 +1,4 @@
-var swVersion = "1.0.2";
+var swVersion = "1.0.1";
 const expectedCaches = ['static-v2'];
 urlsToCache = [
     '/default.html',
@@ -82,7 +82,8 @@ function offlineRequest(request) {
     if (request.url.match(/\.(png|gif|jpg)/i)) {
         return caches.match('/images/1.jpg')
     }
-    if (request.url.match(/http:\/\/localhost:8084/)) {
+    //if (request.url.match(/http:\/\/localhost:8084/)) {
+    if(request.url.match(/https:\/\/china-dm\.github\.io\//)){
         return caches.match('/default.html')
     }
 }
@@ -95,7 +96,7 @@ function onlineRequest(fetchRequest) {
         credentials: "omit",
         mode: 'cors'
     }).then(response => {
-        if (!response || response.status !== 200 || response.url === "http://localhost:8084/") {
+        if (!response || response.status !== 200 || response.url === "https://china-dm.github.io/") {
             return response;
         }
         const responseToCache = response.clone();
@@ -144,10 +145,14 @@ this.addEventListener('activate', function (event) {
                     })
                 );
             })
-        ])
+        ]).then(()=>{
+            return this.clients.claim(); // 取得页面控件权
+        })
     );
 });
-
+self.addEventListener('offline',()=>{
+    debugger;
+})
 self.addEventListener('sync',event=>{
     //alert(event.tag)
     console.log(event);
