@@ -3,8 +3,6 @@
     "short_name": "高顿",
     "start_url": "/",
     "display": "standalone",
-    "theme_color": "#FFDF00",
-    "background_color": "#FFDF00",
     "icons": [
         {
             "src": "icon1.png",

@@ -15,30 +15,30 @@ this.addEventListener('install', function (event) {
 });
 
 
-self.addEventListener("fetch", event => {
-        event.respondWith(
-            caches.match(event.request).then(hit => {
-                if (hit) {
-                    return hit;
-                }
-                const fetchRequest = event.request.clone();
-                if (navigator.onLine) {
-                    return onlineRequest(fetchRequest)
-                }
-                return offlineRequest(fetchRequest)
-            })
-        )
-    }
-)
+// self.addEventListener("fetch", event => {
+//         event.respondWith(
+//             caches.match(event.request).then(hit => {
+//                 if (hit) {
+//                     return hit;
+//                 }
+//                 const fetchRequest = event.request.clone();
+//                 if (navigator.onLine) {
+//                     return onlineRequest(fetchRequest)
+//                 }
+//                 return offlineRequest(fetchRequest)
+//             })
+//         )
+//     }
+// )
 
 function offlineRequest(request) {
     if (request.url.match(/\.(png|gif|jpg)/i)) {
         return caches.match('/icon1.png')
     }
-    /*if (request.url.match(/http:\/\/localhost:8084/)) {
+    if (request.url.match(/http:\/\/localhost:8084/)) {
     //if(request.url.match(/https:\/\/china-dm\.github\.io\//)){
         return caches.match('/default.html')
-    }*/
+    }
 }
 
 function onlineRequest(fetchRequest) {
@@ -48,7 +48,7 @@ function onlineRequest(fetchRequest) {
         credentials: "omit",
         mode: 'cors'
     }).then(response => {
-        if (!response || response.status !== 200/* || response.url == "http://localhost:8084/"*/) {
+        if (!response || response.status !== 200 || response.url == "http://localhost:8084/") {
             return response;
         }
         const responseToCache = response.clone();
@@ -117,7 +117,7 @@ self.addEventListener("unhandledrejection", (error) => {
 })
 
 
-/*this.addEventListener('fetch', function (event) {
+this.addEventListener('fetch', function (event) {
     event.respondWith(
         caches.match(event.request).then(function (response) {
             // 来来来，代理可以搞一些代理的事情
@@ -158,4 +158,4 @@ self.addEventListener("unhandledrejection", (error) => {
             });
         })
     );
-});*/
+});
