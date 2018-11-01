@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="theme-color" content="#f90"/>
-    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
     <title>Title</title>
-    <link rel="manifest" href="/manifest.json"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <link rel="manifest" href="/manifest.js"/>
     <link rel="stylesheet" href="/css/main1.css"/>
     <link rel="apple-touch-icon" href="/icon1.png">
     <script type="text/javascript" src="/js/index.2.js"></script>
@@ -14,7 +13,7 @@
 <div id="offline" style="display:none">离线</div>
 <script>
     var offline = document.getElementById("offline");
-
+    var notification;
     function showIndicator() {
         offline.innerHTML = "离线"
         offline.style.display = "block"
@@ -22,7 +21,7 @@
             if (grant != "granted") {
                 return;
             }
-            const notification = new Notification("Hi,网络不给力", {
+            notification = new Notification("Hi,网络不给力", {
                 body: "您的网络貌似离线了，不过在高顿访问过的页面还可以继续打开~",
                 icon: 'https://wwwupload.gaodunwangxiao.com/uploads/180126/5931-1P126153351949.jpg',
                 renotify: true,
@@ -36,6 +35,7 @@
 
     function hideIndicator() {
         offline.style.display = "none"
+        notification.close();
     }
 
     window.addEventListener("online", hideIndicator);
@@ -46,7 +46,7 @@
 <img src="https://wwwupload.gaodunwangxiao.com/images/rgtConsult.png" alt="1"/>
 <img src="https://wwwupload.gaodunwangxiao.com/uploads/180126/5931-1P126153351949.jpg" alt="2" style="display:none"/>
 <script>
-    var deferredPrompt;
+    /*var deferredPrompt;
     window.addEventListener("beforeinstallprompt", function (event) {
         event.preventDefault();
         deferredPrompt = event;
@@ -60,15 +60,14 @@
             }
 
         })
-
     })
     document.getElementById('addToHomeScreen').addEventListener('click', function () {
         if (deferredPrompt) {
             deferredPrompt.prompt();
         }
-    })
+    })*/
 
-    var version = '1.0.3';
+    var version = '1.0.1';
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
             navigator.serviceWorker.register('/sw.js', {scope: '/'})
@@ -93,11 +92,11 @@
                     // 注册失败:(
                     console.log('ServiceWorker registration failed: ', err);
                 });
-            navigator.serviceWorker.ready.then(reg => {
+            /*navigator.serviceWorker.ready.then(reg => {
                 return reg.sync.register('yes')
             }).then(res => {
                 console.log("成功" + res)
-            })
+            })*/
 
         });
     }
