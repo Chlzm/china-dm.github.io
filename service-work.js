@@ -74,7 +74,7 @@ workbox.routing.registerRoute(
     /\.css/,
     //new RegExp('https://g\.alicdn\.com/'),
     workbox.strategies.staleWhileRevalidate({
-        cacheName: 'tbh:static',
+        cacheName: 'css',
         plugins: [
             new workbox.expiration.Plugin({
                 maxEntries: 20
@@ -86,7 +86,7 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
     /\.js/,
     workbox.strategies.staleWhileRevalidate({
-        cacheName: 'tbh:js',
+        cacheName: 'js',
         plugins: [
             new workbox.expiration.Plugin({
                 maxEntries: 20

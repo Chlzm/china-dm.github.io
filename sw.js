@@ -1,4 +1,4 @@
-var swVersion = "1.0.1";
+var swVersion = "1.0.12";
 const expectedCaches = ['static-v2'];
 urlsToCache = [
     '/default.html',
@@ -9,27 +9,30 @@ this.addEventListener('install', function (event) {
         caches.open('static-v2').then(function (cache) {
             return cache.addAll(urlsToCache);
         }).then(() => {
-           self.skipWaiting();
+            self.skipWaiting();
         })
     );
+    self.registration && self.registration.showNotification('安装提示',{
+        body:'安装完成'
+    })
 });
 
 
-// self.addEventListener("fetch", event => {
-//         event.respondWith(
-//             caches.match(event.request).then(hit => {
-//                 if (hit) {
-//                     return hit;
-//                 }
-//                 const fetchRequest = event.request.clone();
-//                 if (navigator.onLine) {
-//                     return onlineRequest(fetchRequest)
-//                 }
-//                 return offlineRequest(fetchRequest)
-//             })
-//         )
-//     }
-// )
+self.addEventListener("fetch", event => {
+        event.respondWith(
+            caches.match(event.request).then(hit => {
+                if (hit) {
+                    return hit;
+                }
+                const fetchRequest = event.request.clone();
+                if (navigator.onLine) {
+                    return onlineRequest(fetchRequest)
+                }
+                return offlineRequest(fetchRequest)
+            })
+        )
+    }
+)
 
 function offlineRequest(request) {
     if (request.url.match(/\.(png|gif|jpg)/i)) {
@@ -117,6 +120,7 @@ self.addEventListener("unhandledrejection", (error) => {
 })
 
 
+/*
 this.addEventListener('fetch', function (event) {
     event.respondWith(
         caches.match(event.request).then(function (response) {
@@ -158,4 +162,4 @@ this.addEventListener('fetch', function (event) {
             });
         })
     );
-});
+});*/
