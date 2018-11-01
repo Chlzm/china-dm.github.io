@@ -7,7 +7,6 @@
     <link rel="manifest" href="/manifest.json"/>
     <link rel="stylesheet" href="/css/main1.css"/>
     <link rel="apple-touch-icon" href="/icon1.png">
-    <link rel="icon" href="//www.jd.com/favicon.ico" mce_href="//www.jd.com/favicon.ico" type="image/x-icon" />
     <script type="text/javascript" src="/js/index.2.js"></script>
 </head>
 <body>
@@ -24,9 +23,8 @@
             }
             notification = new Notification("Hi,网络不给力", {
                 body: "您的网络貌似离线了，不过在高顿访问过的页面还可以继续打开~",
-                icon: 'https://wwwupload.gaodunwangxiao.com/uploads/180126/5931-1P126153351949.jpg',
-                renotify: true,
-                tag: "hello"
+                /*renotify: true,
+                tag: "hello"*/
             })
             notification.onclick = () => {
                 notification.close();
@@ -44,8 +42,6 @@
 
 </script>
 <h1 id="addToHomeScreen">Hello World !</h1>
-<img src="https://wwwupload.gaodunwangxiao.com/images/rgtConsult.png" alt="1"/>
-<img src="https://wwwupload.gaodunwangxiao.com/uploads/180126/5931-1P126153351949.jpg" alt="2" style="display:none"/>
 <script>
     /*var deferredPrompt;
     window.addEventListener("beforeinstallprompt", function (event) {
@@ -68,7 +64,7 @@
         }
     })*/
 
-    var version = '1.0.2';
+    var version = '1.0.3';
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
             navigator.serviceWorker.register('/sw.js', {scope: '/'})

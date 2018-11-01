@@ -1,4 +1,4 @@
-var swVersion = "1.0.12";
+var swVersion = "1.0.122";
 const expectedCaches = ['static-v2'];
 urlsToCache = [
     '/default.html',
@@ -12,9 +12,9 @@ this.addEventListener('install', function (event) {
             self.skipWaiting();
         })
     );
-    self.registration && self.registration.showNotification('安装提示',{
+    /*self.registration && self.registration.showNotification('安装提示',{
         body:'安装完成'
-    })
+    })*/
 });
 
 
@@ -115,7 +115,6 @@ self.addEventListener('sync',event=>{
 
 // 安装service worker 失败时
 self.addEventListener("unhandledrejection", (error) => {
-    debugger;
     //console.log(error);
 })
 

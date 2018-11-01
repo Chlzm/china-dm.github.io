@@ -28,7 +28,7 @@ self.addEventListener('unhandledrejection', function(e) {
 importScripts('/workbox/workbox-sw.js');
 
 workbox.setConfig({
-    debug: false,
+    debug: true,
     modulePathPrefix: '/workbox'
 });
 
